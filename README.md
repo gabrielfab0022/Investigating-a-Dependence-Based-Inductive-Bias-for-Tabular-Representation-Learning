@@ -1,4 +1,4 @@
-# Dependence-Based-Inductive-Bias-for-Tabular-Representation-Learning
+# Investigating a Dependence-Based Inductive Bias for Tabular Representation Learning
 Study about a CNN-like inductive bias (without weight sharing) for tabular data representation learning. It consists of equipping tabular data with a sequence-like feature ordering based on pairwise statistical dependencies among variables, and then verifying the performance of locally connected autoencoders applied to such spatial layouts.
 
 ## Overview 
