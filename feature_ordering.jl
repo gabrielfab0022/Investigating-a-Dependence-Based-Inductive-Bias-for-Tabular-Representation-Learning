@@ -4,10 +4,10 @@ using LinearAlgebra
 
 cd("isolet\\dependence_graphs\\")
 
-mi_map = readdlm("mi_map.txt")
-mi_map = mi_map/maximum(mi_map)
+map = readdlm("mi_map.txt")
+map = map/maximum(map)
 
-D = -mi_map .+ 1
+D = -map .+ 1
 D = D - Diagonal(D)
 
 result = hclust(D, linkage=:average, branchorder=:barjoseph)
