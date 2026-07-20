@@ -1,2 +1,23 @@
 # Dependence-Based-Inductive-Bias-for-Tabular-Representation-Learning
 Study about a CNN-like inductive bias (without weight sharing) for tabular data representation learning. It consists of equipping tabular data with a sequence-like feature ordering based on pairwise statistical dependencies among variables, and then verifying the performance of locally connected autoencoders applied to such spatial layouts.
+
+## Overview 
+
+CNNs are the de-facto standard in deep learning-based approaches in computer vision, and, more generally, problems where the input data is defined on a low-dimensional grid. In their most successful applications, which involves image data, the performances gains attained by these models is creditted, in large parts, to the exploration of local structures in images through convolutional and pooling layers, as well as to the large parameter efficiency(as CNNs may be seem as constrained MLPs) and to the translation equivariance yielded by the weight sharing. 
+
+As it pertains to the notion of locality, it may seem that this is a very specific prior that works well for grid-structured data. However, previous work has shown that, in a dataset containing the shuffled images --- where spatial locality is meaningless, and, therefore, CNNs are not expected to work so well ---, meaningful localities can be invoked through pairwise dependencies across variables that represents pixels. Not only that, it can be shown that such artificially crafted localities qualitatively matches those of the original spatial layout (pre-shuffling). This surprising observation leads to the, equally surprising, conclusion that this principle of localising dependencies suffices to achieve performance gains of CNNs in image recognition, even without the spatial prior. 
+
+Therefore, the goal of this study is to investigate whether a similar kind of principle may yield an useful inductive for tabular data, where deep learning is yet to enjoy the same level of success it has found on grid-structured data. Specifically, the proposed pipeline is structured as follows. First, a generic dataset is equipped with a 1D grid structure similar to the shuffled images are reconstructed, by positioning variables that share high statistical dependencies in near spatial positions. Then, CNN-like restrictions are imposed in the neural network models through the use of locally connected layers. 
+
+Here, the main difference from CNNs inductive biases is that locally connected layers feature no weight sharing across localities. That's because in generic setups, stationarity cannot be assumed as a prior. Therefore, we had to drop the weight sharing, even though we know that it is an important ingredient of CNNs, and without it, the inductive bias becomes much weaker. 
+
+This study was also restricted to the task of dimensionality reduction through autoencoding. Therefore, autoencoder models were defined using locally connected layers and trained on tabular data artificially defined as signals on 1-dimensional grid based on statistical dependencies between features. For grid construction, two pairwise measures of statistical dependencies were considered: the correlation coefficient and the mutual information. 
+
+We evaluate the quality of the trained models mainly through reconstruction accuracy, but also with respect to the downstream performance of an SVM classifier in the latent space. The results are compared to those of dense models (standard baseline for tabular data) and locally connected models applied to random spatial layouts. 
+
+## Structure of the repository 
+This repository contains data and code used throughout the experiments. Specifically, it contains one folder for each one of the seven benchmarks used: isolet, christine, gina, dilbert, scene, scene, gisette, guillermo. 
+
+In each of these folders, we have the data (both training and testing data, already partitioned), the adjacency matrices of the dependence graphs, where each feature is a node (both with respect to mutual information and correlation estimations), the feature ordering yielded by both graphs and a file named "experiments.py", containing the source code for the autoencoder experiments with the corresponding dataset. In this code, every step of the deep learning pipeline can be found, such as model definitions (both dense and locally connected), data preprocessing, evaluation, classifier evaluation etc. 
+
+Additionally, the repository contains two other Julia files: mi_graph_creation, with the code for the creation of the mutual information-based dependence graph; and feature_ordering.jl, which contains the code used to embbed the tabular data into 1D grid, given the dependence graph.
